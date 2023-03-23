@@ -9,6 +9,7 @@ use App\Http\Requests\UpdatePostRequest;
 
 // Helpers
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -43,6 +44,11 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         $data = $request->validated();
+
+        if (array_key_exists('img', $data)) {
+            $imgPath = Storage::put('posts', $data['img']);
+            $data['img'] = $imgPath;
+        }
 
         $data['slug'] = Str::slug($data['title']);
 
@@ -84,6 +90,25 @@ class PostController extends Controller
     {
         $data = $request->validated();
 
+        if (array_key_exists('delete_img', $data)) {
+            if ($post->img) {
+                // Cancella il vecchio file
+                Storage::delete($post->img);
+
+                $post->img = null;
+                $post->save();
+            }
+        }
+        else if (array_key_exists('img', $data)) {
+            $imgPath = Storage::put('posts', $data['img']);
+            $data['img'] = $imgPath;
+
+            if ($post->img) {
+                // Cancella il vecchio file
+                Storage::delete($post->img);
+            }
+        }
+
         $data['slug'] = Str::slug($data['title']);
 
         $post->update($data);
@@ -99,6 +124,11 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        if ($post->img) {
+            // Cancella il vecchio file
+            Storage::delete($post->img);
+        }
+
         $post->delete();
 
         return redirect()->route('admin.posts.index')->with('success', 'Post eliminato con successo!');
