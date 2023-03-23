@@ -20,7 +20,7 @@
                 @endif
 
                 <p>
-                    {{ $post->content }}
+                    {!! nl2br($post->content) !!}
                 </p>
             </div>
         </div>
