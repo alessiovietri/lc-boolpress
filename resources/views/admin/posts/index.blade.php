@@ -16,6 +16,30 @@
 
         @include('partials.success')
 
+        <div class="row mb-4">
+            <div class="col">
+                <h4>
+                    Cerca
+                </h4>
+
+                <form action="{{ route('admin.posts.index') }}" method="GET">
+                    <div>
+                        <input
+                            type="text"
+                            name="title"
+                            placeholder="Cerca per titolo..."
+                            class="form-control"
+                            value="{{ request()->input('title') }}">
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-secondary">
+                            Cerca
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col">
                 <table class="table">

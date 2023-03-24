@@ -28,7 +28,14 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        $titleParam = request()->input('title');
+        if (isset($titleParam)) {
+            // SELECT * FROM posts WHERE title LIKE '%$titleParam%'
+            $posts = Post::where('title', 'LIKE', '%'.$titleParam.'%')->get();
+        }
+        else {
+            $posts = Post::all();
+        }
 
         return view('admin.posts.index', compact('posts'));
     }
