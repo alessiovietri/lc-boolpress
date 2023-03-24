@@ -47,6 +47,18 @@
                     </div>
 
                     <div class="mb-3">
+                        <label for="category_id" class="form-label">
+                            Categoria
+                        </label>
+                        <select name="category_id" id="category_id" class="form-select">
+                            <option value="">Nessuna categoria</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
                         <label for="img" class="form-label">
                             Immagine in evidenza
                         </label>

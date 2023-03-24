@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 // Controllers
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,7 @@ Route::prefix('admin')
     Route::get('/dashboard', [PageController::class, 'dashboard'])->name('dashboard');
 
     Route::resource('posts', PostController::class);
+    Route::resource('categories', CategoryController::class);
 });
 
 Route::middleware('auth')

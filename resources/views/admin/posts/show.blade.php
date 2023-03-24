@@ -13,6 +13,10 @@
                     Slug: {{ $post->slug }}
                 </h6>
 
+                <h3>
+                    Categoria: {{ $post->category ? $post->category->name : 'Nessuna categoria' }}
+                </h3>
+
                 @if ($post->img)
                     <div>
                         <img src="{{ asset('storage/'.$post->img) }}" style="height: 300px;" alt="">
