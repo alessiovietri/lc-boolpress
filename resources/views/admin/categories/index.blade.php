@@ -5,11 +5,11 @@
         <div class="row justify-content-center mb-4">
             <div class="col">
                 <h1>
-                    Tutti gli articoli
+                    Tutte le categorie
                 </h1>
 
-                <a href="{{ route('admin.posts.create') }}" class="btn btn-success">
-                    Aggiungi articolo
+                <a href="{{ route('admin.categories.create') }}" class="btn btn-success">
+                    Aggiungi categoria
                 </a>
             </div>
         </div>
@@ -22,39 +22,32 @@
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
-                            <th scope="col">Titolo</th>
+                            <th scope="col">Nome</th>
                             <th scope="col">Slug</th>
-                            <th scope="col">Categoria</th>
+                            <th scope="col"># articoli</th>
                             <th scope="col">Azioni</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($posts as $post)
+                        @foreach ($categories as $category)
                             <tr>
-                                <th scope="row">{{ $post->id }}</th>
-                                <td>{{ $post->title }}</td>
-                                <td>{{ $post->slug }}</td>
+                                <th scope="row">{{ $category->id }}</th>
+                                <td>{{ $category->name }}</td>
+                                <td>{{ $category->slug }}</td>
+                                {{-- SELECT COUNT(*) FROM posts where category_id = $category->id --}}
+                                <td>{{ $category->posts()->count() }}</td>
                                 <td>
-                                    @if ($post->category)
-                                        <a href="{{ route('admin.categories.show', $post->category->id) }}">
-                                            {{ $post->category->name }}
-                                        </a>
-                                    @else
-                                        Nessuna categoria
-                                    @endif
-                                </td>
-                                <td>
-                                    <a href="{{ route('admin.posts.show', $post->id) }}" class="btn btn-primary">
+                                    <a href="{{ route('admin.categories.show', $category->id) }}" class="btn btn-primary">
                                         Dettagli
                                     </a>
-                                    <a href="{{ route('admin.posts.edit', $post->id) }}" class="btn btn-warning">
+                                    <a href="{{ route('admin.categories.edit', $category->id) }}" class="btn btn-warning">
                                         Aggiorna
                                     </a>
                                     <form
                                         class="d-inline-block"
-                                        action="{{ route('admin.posts.destroy', $post->id) }}"
+                                        action="{{ route('admin.categories.destroy', $category->id) }}"
                                         method="POST"
-                                        onsubmit="return confirm('Sei sicuro di voler eliminare questo post?');">
+                                        onsubmit="return confirm('Sei sicuro di voler eliminare questa categoria?');">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-danger">

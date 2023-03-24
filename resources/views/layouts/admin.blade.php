@@ -61,7 +61,13 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-white {{ Route::currentRouteName() == 'admin.posts.index' ? 'bg-secondary' : '' }}"
                                         href="{{ route('admin.posts.index') }}">
-                                        <i class="fa-solid fa-file-pen fa-lg fa-fw"></i> Posts
+                                        <i class="fa-solid fa-file-pen fa-lg fa-fw"></i> Post
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white {{ Route::currentRouteName() == 'admin.categories.index' ? 'bg-secondary' : '' }}"
+                                        href="{{ route('admin.categories.index') }}">
+                                        <i class="fa-solid fa-tags fa-lg fa-fw"></i> Categorie
                                     </a>
                                 </li>
                             </ul>
