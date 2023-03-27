@@ -30,7 +30,7 @@
                             class="form-control"
                             id="title"
                             name="title"
-                            required
+                            {{-- required --}}
                             maxlength="128"
                             value="{{ old('title', $post->title) }}"
                             placeholder="Inserisci il titolo...">
@@ -60,6 +60,30 @@
                                 <option value="{{ $category->id }}" {{ old('category_id', $post->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                             @endforeach
                         </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label d-block mb-2">
+                            Tag
+                        </label>
+                        @foreach ($tags as $tag)
+                            <div class="form-check form-check-inline">
+                                <input
+                                    class="form-check-input"
+                                    name="tags[]"
+                                    type="checkbox"
+                                    id="tag-{{ $tag->id }}"
+                                    @if (old('tags') && is_array(old('tags')) && count(old('tags')) > 0)
+                                        {{ in_array($tag->id, old('tags')) ? 'checked' : '' }}
+                                    @elseif($post->tags->contains($tag))
+                                        checked
+                                    @endif
+                                    value="{{ $tag->id }}">
+                                <label class="form-check-label" for="tag-{{ $tag->id }}">
+                                    {{ $tag->name }}
+                                </label>
+                            </div>
+                        @endforeach
                     </div>
 
                     <div class="mb-3">

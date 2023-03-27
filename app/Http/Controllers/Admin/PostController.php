@@ -18,6 +18,7 @@ use App\Mail\NewPost;
 
 // Models
 use App\Models\Category;
+use App\Models\Tag;
 
 class PostController extends Controller
 {
@@ -48,8 +49,9 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $tags = Tag::all();
 
-        return view('admin.posts.create', compact('categories'));
+        return view('admin.posts.create', compact('categories', 'tags'));
     }
 
     /**
@@ -70,6 +72,14 @@ class PostController extends Controller
         $data['slug'] = Str::slug($data['title']);
 
         $newPost = Post::create($data);
+
+        if (array_key_exists('tags', $data)){
+            // foreach ($data['tags'] as $tagId) {
+            //     $newPost->tags()->attach($tagId);
+            // }
+            // OPPURE
+            $newPost->tags()->sync($data['tags']);
+        }
 
         $user = Auth::user();
 
@@ -102,8 +112,9 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         $categories = Category::all();
+        $tags = Tag::all();
 
-        return view('admin.posts.edit', compact('post', 'categories'));
+        return view('admin.posts.edit', compact('post', 'categories', 'tags'));
     }
 
     /**
@@ -139,6 +150,22 @@ class PostController extends Controller
         $data['slug'] = Str::slug($data['title']);
 
         $post->update($data);
+
+        if (array_key_exists('tags', $data)){
+            // foreach ($post->tags as $tag) {
+            //     $post->tags()->detach($tag);
+            // }
+            // foreach ($data['tags'] as $tagId) {
+            //     $post->tags()->attach($tagId);
+            // }
+            // OPPURE
+            $post->tags()->sync($data['tags']);
+        }
+        else{
+            // $post->tags()->sync([]);
+            // OPPURE
+            $post->tags()->detach();
+        }
 
         return redirect()->route('admin.posts.show', $post->id)->with('success', 'Post aggiornato con successo!');
     }
