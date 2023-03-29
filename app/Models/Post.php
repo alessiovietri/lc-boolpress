@@ -17,6 +17,36 @@ class Post extends Model
         'category_id'
     ];
 
+    protected $hidden = [
+        'img'
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'full_img_path',
+        'formatted_created_at'
+    ];
+
+    public function getFullImgPathAttribute()
+    {
+        $fullPath = null;
+
+        if ($this->img) {
+            $fullPath = asset('storage/'.$this->img);
+        }
+
+        return $fullPath;
+    }
+
+    public function getFormattedCreatedAtAttribute()
+    {
+        return date('d/m/Y \a\l\l\e H:i', strtotime($this->created_at));
+    }
+
     public function category() {
         return $this->belongsTo(Category::class);
     }
