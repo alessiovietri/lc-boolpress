@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 // Models
 use App\Models\Post;
 
+// Helpers
+use Exception;
+
 class PostController extends Controller
 {
     /**
@@ -52,12 +55,48 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  string  $slug
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        //
+        // Versione prefe di Alessio
+        // $post = Post::where('slug', $slug)->with('category', 'tags')->first();
+
+        // if ($post) {
+        //     return response()->json([
+        //         'success' => true,
+        //         'code' => 200,
+        //         'message' => 'Ok',
+        //         'post' => $post
+        //     ]);
+        // }
+        // else {
+        //     return response()->json([
+        //         'success' => false,
+        //         'code' => 404,
+        //         'message' => 'Not Found'
+        //     ]);
+        // }
+
+        // Altra versione
+        try {
+            $post = Post::where('slug', $slug)->with('category', 'tags')->firstOrFail();
+
+            return response()->json([
+                'success' => true,
+                'code' => 200,
+                'message' => 'Ok',
+                'post' => $post
+            ]);
+        }
+        catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 
     // /**

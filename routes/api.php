@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\PostController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
 Route::name('api.')->group(function () {
     Route::get('/test', [PageController::class, 'test'])->name('test');
 
